@@ -137,113 +137,18 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
-
-# Scheduled Tasks
-# ---------------
-
-# scheduler_events = {
-# 	"all": [
-# 		"tcb_customize.tasks.all"
-# 	],
-# 	"daily": [
-# 		"tcb_customize.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"tcb_customize.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"tcb_customize.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"tcb_customize.tasks.monthly"
-# 	],
-# }
-
-# Testing
-# -------
-
-# before_tests = "tcb_customize.install.before_tests"
-
-# Overriding Methods
-# ------------------------------
-#
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "tcb_customize.event.get_events"
-# }
-#
-# each overriding function accepts a `data` argument;
-# generated from the base implementation of the doctype dashboard,
-# along with any modifications made in other Frappe apps
-# override_doctype_dashboards = {
-# 	"Task": "tcb_customize.task.get_dashboard_data"
-# }
-
-# exempt linked doctypes from being automatically cancelled
-#
-# auto_cancel_exempted_doctypes = ["Auto Repeat"]
-
-# Ignore links to specified DocTypes when deleting documents
-# -----------------------------------------------------------
-
-# ignore_links_on_delete = ["Communication", "ToDo"]
-
-# Request Events
-# ----------------
-# before_request = ["tcb_customize.utils.before_request"]
-# after_request = ["tcb_customize.utils.after_request"]
-
-# Job Events
-# ----------
-# before_job = ["tcb_customize.utils.before_job"]
-# after_job = ["tcb_customize.utils.after_job"]
-
-# User Data Protection
-# --------------------
-
-# user_data_fields = [
-# 	{
-# 		"doctype": "{doctype_1}",
-# 		"filter_by": "{filter_by}",
-# 		"redact_fields": ["{field_1}", "{field_2}"],
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_2}",
-# 		"filter_by": "{filter_by}",
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_3}",
-# 		"strict": False,
-# 	},
-# 	{
-# 		"doctype": "{doctype_4}"
-# 	}
-# ]
-
-# Authentication and authorization
-# --------------------------------
-
-# auth_hooks = [
-# 	"tcb_customize.auth.validate"
-# ]
-
-# Automatically update python controller files with type annotations for this app.
-# export_python_type_annotations = True
-
-# default_log_clearing_doctypes = {
-# 	"Logging DocType Name": 30  # days to retain logs
-# }
-
-# Translation
-# ------------
-# List of apps whose translatable strings should be excluded from this app's translations.
-# ignore_translatable_strings_from = []
-
+doc_events = {
+    "Event": {
+        "before_insert": "tcb_customize.api.google_calendar.populate_employee_participant_emails",
+        "before_save": "tcb_customize.api.google_calendar.populate_employee_participant_emails",
+        "after_insert": "tcb_customize.api.google_calendar.notify_event_attendees",
+        "on_update": "tcb_customize.api.google_calendar.notify_event_attendees",
+    },
+    "Lead": {
+        "after_insert": "tcb_customize.lead_events.after_insert",
+        "on_trash": "tcb_customize.lead_events.on_trash",
+    },
+    "Communication": {
+        "after_insert": "tcb_customize.services.email.handle_incoming_communication",
+    },
+}
